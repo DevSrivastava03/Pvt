@@ -369,6 +369,123 @@
                 transform: translateY(100vh) rotate(720deg);
             }
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+                border-radius: 30px;
+                border: 3px solid #F1C32C;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 
+                            0 0 0 6px rgba(241, 195, 44, 0.2),
+                            0 0 0 12px rgba(241, 195, 44, 0.1);
+            }
+
+            .container::before,
+            .container::after {
+                font-size: 30px;
+                top: -15px;
+            }
+
+            h1 {
+                font-size: 2em;
+                text-shadow: 1px 1px 0px #F1C32C, 3px 3px 0px rgba(57, 54, 160, 0.3);
+            }
+
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 25px;
+            }
+
+            .question {
+                font-size: 1.5em;
+                margin-bottom: 40px;
+            }
+
+            .buttons {
+                gap: 20px;
+                min-height: 80px;
+            }
+
+            button {
+                padding: 15px 35px;
+                font-size: 1.3em;
+                border-radius: 40px;
+            }
+
+            #yesBtn {
+                border: 3px solid #3936A0;
+            }
+
+            #noBtn {
+                border: 3px solid #F1C32C;
+            }
+
+            .dog {
+                font-size: 45px;
+                bottom: 15px;
+            }
+
+            .heart {
+                font-size: 22px;
+            }
+
+            .sparkle {
+                font-size: 16px;
+            }
+
+            .celebration h1 {
+                font-size: 4em;
+                text-shadow: 3px 3px 0px #ffffff, 6px 6px 0px rgba(57, 54, 160, 0.3);
+            }
+
+            .celebration .message {
+                font-size: 1.6em;
+                padding: 0 15px;
+            }
+
+            .falling-heart {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 35px 20px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            .question {
+                font-size: 1.3em;
+                margin-bottom: 35px;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+
+            .dog {
+                font-size: 35px;
+                bottom: 10px;
+            }
+
+            .celebration h1 {
+                font-size: 3em;
+            }
+
+            .celebration .message {
+                font-size: 1.3em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -430,14 +547,32 @@
 
         // Make the "No" button run away
         noBtn.addEventListener('mouseover', () => {
-            const maxX = window.innerWidth - noBtn.offsetWidth - 100;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 100;
+            const margin = 50; // Keep button away from edges
+            const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+            const maxY = window.innerHeight - noBtn.offsetHeight - margin;
             
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
+            // Ensure minimum distance from edges
+            const randomX = Math.max(margin, Math.random() * maxX);
+            const randomY = Math.max(margin, Math.random() * maxY);
             
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'translate(0, 0)';
+        });
+
+        // For touch devices, also handle touch events
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const margin = 50;
+            const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+            const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+            
+            const randomX = Math.max(margin, Math.random() * maxX);
+            const randomY = Math.max(margin, Math.random() * maxY);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'translate(0, 0)';
         });
 
         // Handle "Yes" button click
