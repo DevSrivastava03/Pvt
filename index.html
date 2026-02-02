@@ -109,6 +109,51 @@
             }
         }
 
+        .countdown {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #ffffff 0%, #fff5f8 100%);
+            padding: 20px 40px;
+            border-radius: 20px;
+            border: 3px solid #F1C32C;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .countdown-title {
+            color: #3936A0;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .time-unit {
+            text-align: center;
+        }
+
+        .time-value {
+            color: #F1C32C;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px #3936A0;
+            display: block;
+        }
+
+        .time-label {
+            color: #3936A0;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
         .container {
             text-align: center;
             background: linear-gradient(to bottom, #ffffff 0%, #fff5f8 100%);
@@ -372,6 +417,29 @@
 
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
+            .countdown {
+                top: 10px;
+                padding: 15px 25px;
+                border: 2px solid #F1C32C;
+            }
+
+            .countdown-title {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .countdown-timer {
+                gap: 10px;
+            }
+
+            .time-value {
+                font-size: 1.5em;
+            }
+
+            .time-label {
+                font-size: 0.7em;
+            }
+
             .container {
                 padding: 40px 25px;
                 border-radius: 30px;
@@ -450,6 +518,22 @@
         }
 
         @media (max-width: 480px) {
+            .countdown {
+                padding: 12px 20px;
+            }
+
+            .countdown-title {
+                font-size: 0.9em;
+            }
+
+            .time-value {
+                font-size: 1.3em;
+            }
+
+            .time-label {
+                font-size: 0.65em;
+            }
+
             .container {
                 padding: 35px 20px;
                 width: 95%;
@@ -489,9 +573,31 @@
     </style>
 </head>
 <body>
+    <div class="countdown">
+        <div class="countdown-title">💕 Valentine's Day Countdown 💕</div>
+        <div class="countdown-timer">
+            <div class="time-unit">
+                <span class="time-value" id="days">00</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="hours">00</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="minutes">00</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="seconds">00</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+    </div>
+
     <div class="hearts" id="hearts"></div>
     <div class="sparkles" id="sparkles"></div>
-    <div class="dog">🐕</div>
+    <div class="dog">🐶</div>
     
     <div class="container">
         <h1>Hey Shivangi! 💕</h1>
@@ -510,6 +616,44 @@
     </div>
 
     <script>
+        // Countdown Timer - automatically adjusts to user's local timezone
+        function updateCountdown() {
+            // Get current date in user's local timezone
+            const now = new Date();
+            
+            // Create Valentine's Day date in user's local timezone
+            const valentinesDay = new Date(now.getFullYear(), 1, 14, 0, 0, 0); // Month is 0-indexed, so 1 = February
+            
+            // If Valentine's Day has passed this year, use next year
+            if (now > valentinesDay) {
+                valentinesDay.setFullYear(now.getFullYear() + 1);
+            }
+            
+            const distance = valentinesDay.getTime() - now.getTime();
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            } else {
+                document.querySelector('.countdown-title').textContent = "💕 It's Valentine's Day! 💕";
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
         // Create floating hearts
         function createHearts() {
             const heartsContainer = document.getElementById('hearts');
